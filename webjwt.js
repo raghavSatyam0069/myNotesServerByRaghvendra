@@ -21,6 +21,7 @@ app.use(function (req, res, next) {
 });
 var port = process.env.port || 2410;
 app.listen(port, () => console.log(`Listening on port ${port}!`));
+let { userData } = require("./empCookieTask-5_2_Data.js");
 
 app.use(
   cors({
@@ -115,12 +116,22 @@ app.post("/register", async function (req, res) {
   let result = await client.connect();
   let db = result.db(dbName);
   let collection = db.collection("notesUser");
-  let response = await collection.insertOne({
-    email: email,
-    password: password,
+  collection.findOne({ email: email }).then((user) => {
+    if (user) {
+      res.status(409).send("Email is already existed");
+    } else {
+      collection
+        .insertOne({
+          email: email,
+          password: password,
+        })
+        .then((user) => {
+          // console.log(user);
+        });
+      // console.log(response);
+      res.send("Registration SuccessFul");
+    }
   });
-  // console.log(response);
-  res.send("Registration SuccessFul");
 });
 
 app.put(
