@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
 });
 var port = process.env.port || 2410;
 app.listen(port, () => console.log(`Listening on port ${port}!`));
-let { userData } = require("./empCookieTask-5_2_Data.js");
+
 
 app.use(
   cors({
